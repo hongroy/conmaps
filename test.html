@@ -1,0 +1,20 @@
+<!DOCTYPE html> 
+<html> 
+<head> 
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
+<title>Test Project</title> 
+<script type="text/javascript" src="http://apis.daum.net/maps/maps3.js?apikey=f9142c3e42b1a984d55e6700933523d4" charset="utf-8"></script> 
+<script type="text/javascript"> 
+var map;
+function init() {
+	map = new daum.maps.Map(document.getElementById('map'), {
+		center: new daum.maps.LatLng(37.544769, 126.971681),
+		level: 3
+	});
+}
+</script> 
+</head> 
+<body onload="init()"> 
+	<div id="map" style="width:1200px;height:800px;"></div> 
+</body> 
+</html>
