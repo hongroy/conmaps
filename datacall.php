@@ -38,66 +38,10 @@ $result = $shop->getData();
 		    }; 
 		var map = new daum.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
 		 
-		// 마커를 표시할 위치와 title 객체 배열입니다 
-		var positions = [
-		<?php
-			$i = 1;
-			foreach ($result as $data) {
-				if($i > 1) echo ",";
-				echo "{title:'" . $data['PJT_NAME'] . "',";
-				echo "latlng:new daum.maps.LatLng(" . $data['LAT'] . "," . $data['LNG'] . ")}";
-				$i = $i+1;
-			}
-		?>
-		];
+		var markers = [];
+		// 마커를 생성하고 지도위에 표시하는 함수입니다
 		
-		// 마커 이미지의 이미지 주소입니다
-		var imageSrc = "http://i1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png"; 
-		    
-		for (var i = 0; i < positions.length; i ++) {
-		    
-		    // 마커 이미지의 이미지 크기 입니다
-		    var imageSize = new daum.maps.Size(24, 35); 
-		    
-		    // 마커 이미지를 생성합니다    
-		    var markerImage = new daum.maps.MarkerImage(imageSrc, imageSize); 
-		    
-		    // 마커를 생성합니다
-		    var marker = new daum.maps.Marker({
-		        map: map, // 마커를 표시할 지도
-		        position: positions[i].latlng, // 마커를 표시할 위치
-		        //title : positions[i].title, // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
-		        image : markerImage // 마커 이미지 
-		    });
-
-		    var infowindow = new daum.maps.InfoWindow({
-		        content: '<p style="margin:7px 22px 7px 12px;font:12px/1.5 sans-serif">' + positions[i].title // 인포윈도우에 표시할 내용
-		    });
-		    daum.maps.event.addListener(marker, 'mouseover', makeOverListener(map, marker, infowindow));
-		    daum.maps.event.addListener(marker, 'mouseout', makeOutListener(infowindow));
-		}
-
-
-
-
-
-
-
-
-		
-		// 인포윈도우를 표시하는 클로저를 만드는 함수입니다 
-		function makeOverListener(map, marker, infowindow) {
-		    return function() {
-		        infowindow.open(map, marker);
-		    };
-		}
-		// 인포윈도우를 닫는 클로저를 만드는 함수입니다 
-		function makeOutListener(infowindow) {
-		    return function() {
-		        infowindow.close();
-		    };
-		}
-		// 커스텀 오버레이를 생성합니다.(홈 표시)
+ 		// 커스텀 오버레이를 생성합니다.(홈 표시)
 		var customOverlay = new daum.maps.CustomOverlay({
 		    position: home_position,
 		    content: home_contents   
@@ -112,8 +56,31 @@ $result = $shop->getData();
 		    addMarker(mouseEvent.latLng);             
 		});
 		// 지도에 표시된 마커 객체를 가지고 있을 배열입니다
-		var markers = [];
-		// 마커를 생성하고 지도위에 표시하는 함수입니다
+		    
+		showConmap(map);
+
+
+		
+
+
+
+
+
+		
+		// 인포윈도우를 표시하는 클로저를 만드는 함수입니다 
+		function makeOverListener(map, marker, infowindow) {
+		    return function() {
+		        infowindow.open(map, marker);
+		    };
+		}
+		
+		// 인포윈도우를 닫는 클로저를 만드는 함수입니다 
+		function makeOutListener(infowindow) {
+		    return function() {
+		        infowindow.close();
+		    };
+		}
+
 		function addMarker(position) {
 		    
 		    // 마커를 생성합니다
@@ -133,6 +100,46 @@ $result = $shop->getData();
 		    for (var i = 0; i < markers.length; i++) {
 		        markers[i].setMap(map);
 		    }            
+		}
+
+		function showConmap(map) {
+			// 마커 이미지의 이미지 주소입니다
+			var imageSrc = "http://i1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png";
+			// 마커를 표시할 위치와 title 객체 배열입니다 
+			var positions = [
+			<?php
+				$i = 1;
+				foreach ($result as $data) {
+					if($i > 1) echo ",";
+					echo "{title:'" . $data['PJT_NAME'] . "',";
+					echo "latlng:new daum.maps.LatLng(" . $data['LAT'] . "," . $data['LNG'] . ")}";
+					$i = $i+1;
+				}
+			?>
+			];
+			for (var i = 0; i < positions.length; i ++) {
+			    
+			    // 마커 이미지의 이미지 크기 입니다
+			    var imageSize = new daum.maps.Size(24, 35); 
+			    
+			    // 마커 이미지를 생성합니다    
+			    var markerImage = new daum.maps.MarkerImage(imageSrc, imageSize); 
+			    
+			    // 마커를 생성합니다
+			    var marker = new daum.maps.Marker({
+			        map: map, // 마커를 표시할 지도
+			        position: positions[i].latlng, // 마커를 표시할 위치
+			        //title : positions[i].title, // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
+			        image : markerImage // 마커 이미지 
+			    });
+
+			    var infowindow = new daum.maps.InfoWindow({
+			        content: '<p style="margin:7px 22px 7px 12px;font:12px/1.5 sans-serif">' + positions[i].title // 인포윈도우에 표시할 내용
+			    });
+			    daum.maps.event.addListener(marker, 'mouseover', makeOverListener(map, marker, infowindow));
+			    daum.maps.event.addListener(marker, 'mouseout', makeOutListener(infowindow));
+			}
+			
 		}
 
 
