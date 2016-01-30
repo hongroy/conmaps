@@ -2,7 +2,7 @@
 class datastore {
 	private $key = "635a4b6371686f6e38314a6c505178";
 	private $searchUrl = "http://openAPI.seoul.go.kr:8088/";
-	private $searchUrl2 = "/xml/ListConstructionWorkService/1/5/";
+	private $searchUrl2 = "/xml/ListConstructionWorkService/1/1000/";
 	
 	/**
 	 * API 결과를 받아오기 위하여 오픈API 서버에 Request 를 하고 결과를 XML Object 로 반환하는 메소드
@@ -29,6 +29,7 @@ class datastore {
 			//foreach($xml->ListConstructionWorkService->row as $data) 
 			foreach($xml->row as $data)
 			{
+				// 테스트라고 PJT_NAME에 포함된건 스킵하도록... 만들어야할듯 ***, continue 구문 활용!!
 				$result['PJT_NAME'] = (string)$data->PJT_NAME;
 				$result['PJT_BGN_DATE'] = (int)$data->PJT_BGN_DATE;
 				$result['PJT_DATE'] = (string)$data->PJT_DATE;
