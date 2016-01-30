@@ -25,28 +25,21 @@ $result = $shop->getData();
 		        level: 3 // 지도의 확대 레벨
 		    }; 
 		var map = new daum.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
-		
 			
 		// 마커를 표시할 위치와 title 객체 배열입니다 
 		var positions = [
-		    {
-		        title: '카카오', 
-		        latlng: new daum.maps.LatLng(33.450705, 126.570677)
-		    },
-		    {
-		        title: '생태연못', 
-		        latlng: new daum.maps.LatLng(33.450936, 126.569477)
-		    },
-		    {
-		        title: '텃밭', 
-		        latlng: new daum.maps.LatLng(33.450879, 126.569940)
-		    },
-		    {
-		        title: '근린공원',
-		        latlng: new daum.maps.LatLng(33.451393, 126.570738)
-		    }
+		<?php
+			$i = 1;
+			foreach ($result as $data) {
+				if($i > 1) echo ",";
+				echo "{title:'" . $data['PJT_NAME'] . "',";
+				echo "latlng:new daum.maps.LatLng(" . $data['LAT'] . "," . $data['LNG'] . ")}";
+				$i = $i+1;
+			}
+		?>
 		];
 
+		
 		// 마커 이미지의 이미지 주소입니다
 		var imageSrc = "http://i1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png"; 
 		    
@@ -66,16 +59,12 @@ $result = $shop->getData();
 		        image : markerImage // 마커 이미지 
 		    });
 		}
+		
+
 		</script>
 
-
-
-
-
-
-
-
-<table cellspacing="0" border="1" summary="쇼핑 검색 API 결과" class="tbl_type">
+		<!--  
+		<table cellspacing="0" border="1" summary="쇼핑 검색 API 결과" class="tbl_type">
         <caption>API Result</caption>
                 <colgroup>
                         <col width="10%">
@@ -101,7 +90,7 @@ $result = $shop->getData();
                         </tr>
                         <?php } ?>
                 </tbody>
-        </table>
+        </table> -->
         
         
 </body>
